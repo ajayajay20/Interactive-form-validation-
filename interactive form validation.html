@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Form Validation</title>
+  <style>
+    /* ====== Basic Page Styling ====== */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #9face6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    form {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      width: 350px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #6c63ff;
+      outline: none;
+    }
+
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .success {
+      color: green;
+      font-size: 13px;
+    }
+
+    button {
+      width: 100%;
+      background: #6c63ff;
+      color: white;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #5548c8;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="registerForm" novalidate>
+    <h2>Registration Form</h2>
+
+    <div class="input-group">
+      <label for="username">Full Name</label>
+      <input type="text" id="username" placeholder="Enter your full name">
+      <div class="error" id="nameError"></div>
+    </div>
+
+    <div class="input-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="Enter your email">
+      <div class="error" id="emailError"></div>
+    </div>
+
+    <div class="input-group">
+      <label for="phone">Phone Number</label>
+      <input type="text" id="phone" placeholder="Enter your phone number">
+      <div class="error" id="phoneError"></div>
+    </div>
+
+    <div class="input-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Create a password">
+      <div class="error" id="passwordError"></div>
+    </div>
+
+    <div class="input-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" id="confirmPassword" placeholder="Confirm password">
+      <div class="error" id="confirmPasswordError"></div>
+    </div>
+
+    <button type="submit">Register</button>
+    <p id="formMessage" class="success" style="text-align:center; margin-top:10px;"></p>
+  </form>
+
+  <script>
+    const form = document.getElementById("registerForm");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      // Get form fields
+      const username = document.getElementById("username").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+      // Error display elements
+      const nameError = document.getElementById("nameError");
+      const emailError = document.getElementById("emailError");
+      const phoneError = document.getElementById("phoneError");
+      const passwordError = document.getElementById("passwordError");
+      const confirmPasswordError = document.getElementById("confirmPasswordError");
+      const formMessage = document.getElementById("formMessage");
+
+      // Reset all errors
+      nameError.textContent = "";
+      emailError.textContent = "";
+      phoneError.textContent = "";
+      passwordError.textContent = "";
+      confirmPasswordError.textContent = "";
+      formMessage.textContent = "";
+
+      let isValid = true;
+
+      // Name validation
+      if (username.length < 3) {
+        nameError.textContent = "Name must be at least 3 characters.";
+        isValid = false;
+      }
+
+      // Email validation
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      if (!email.match(emailPattern)) {
+        emailError.textContent = "Enter a valid email address.";
+        isValid = false;
+      }
+
+      // Phone validation (10 digits)
+      const phonePattern = /^[0-9]{10}$/;
+      if (!phone.match(phonePattern)) {
+        phoneError.textContent = "Enter a valid 10-digit phone number.";
+        isValid = false;
+      }
+
+      // Password validation
+      if (password.length < 6) {
+        passwordError.textContent = "Password must be at least 6 characters.";
+        isValid = false;
+      }
+
+      // Confirm Password validation
+      if (password !== confirmPassword) {
+        confirmPasswordError.textContent = "Passwords do not match.";
+        isValid = false;
+      }
+
+      // If all validations pass
+      if (isValid) {
+        formMessage.textContent = "Form submitted successfully!";
+        form.reset();
+      }
+    });
+  </script>
+
+</body>
+</html>
